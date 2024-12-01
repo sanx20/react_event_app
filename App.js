@@ -24,62 +24,63 @@ const TabNavigator = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
-
-          if (route.name === 'Home') {
-            iconName = 'home-outline';
-          } else if (route.name === 'Favourites') {
-            iconName = 'heart-outline';
-          } else if (route.name === 'CreateEvent') {
-            iconName = 'add-circle-outline';
-          }
-          else if (route.name === 'Profile') {
-            iconName = 'person-circle-outline';
-          }
+          if (route.name === 'Home') iconName = 'home-outline';
+          if (route.name === 'Favourites') iconName = 'heart-outline';
+          if (route.name === 'CreateEvent') iconName = 'add-circle-outline';
+          if (route.name === 'Profile') iconName = 'person-circle-outline';
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'white',
-        tabBarInactiveTintColor: 'gray',
-        tabBarStyle: { backgroundColor: 'black' },
+        tabBarActiveTintColor: '#00A9A5',
+        tabBarInactiveTintColor: '#3A506B',
+        tabBarStyle: {
+          backgroundColor: '#E3FDFD',
+          borderTopWidth: 0,
+          height: 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
       })}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
-          headerStyle: { backgroundColor: 'black' },
-          headerTitle: '',
-          headerTintColor: '#BB86FC',
-          headerTitleStyle: { fontWeight: 'bold' },
+          headerStyle: { backgroundColor: '#00A9A5' },
+          headerTitle: 'Home',
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: { fontWeight: 'bold', fontSize: 20 },
         }}
       />
       <Tab.Screen
         name="Favourites"
         component={FavouritesScreen}
         options={{
-          headerStyle: { backgroundColor: 'black' },
+          headerStyle: { backgroundColor: '#FFD166' },
           headerTitle: 'Favorites',
-          headerTintColor: '#BB86FC',
-          headerTitleStyle: { fontWeight: 'bold' },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: { fontWeight: 'bold', fontSize: 20 },
         }}
       />
       <Tab.Screen
         name="CreateEvent"
         component={CreateEventScreen}
         options={{
-          headerStyle: { backgroundColor: 'black' },
+          headerStyle: { backgroundColor: '#FFB6B9' },
           headerTitle: 'Create Event',
-          headerTintColor: '#BB86FC',
-          headerTitleStyle: { fontWeight: 'bold' },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: { fontWeight: 'bold', fontSize: 20 },
         }}
       />
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          headerStyle: { backgroundColor: 'black' },
+          headerStyle: { backgroundColor: '#3A506B' },
           headerTitle: 'Profile',
-          headerTintColor: '#BB86FC',
-          headerTitleStyle: { fontWeight: 'bold' },
+          headerTintColor: '#FFFFFF',
+          headerTitleStyle: { fontWeight: 'bold', fontSize: 20 },
         }}
       />
     </Tab.Navigator>
@@ -95,14 +96,13 @@ const App = () => {
       setUser(authUser);
       setAuthChecked(true);
     });
-
     return () => unsubscribe();
   }, []);
 
   if (!authChecked) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#BB86FC" />
+        <ActivityIndicator size="large" color="#FFD166" />
       </View>
     );
   }
@@ -121,9 +121,10 @@ const App = () => {
               name="EventDetail"
               component={EventDetailScreen}
               options={{
-                headerStyle: { backgroundColor: 'black' },
-                headerTitle: 'Coin Detail',
-                headerTintColor: '#fff',
+                headerStyle: { backgroundColor: '#FFB6B9' },
+                headerTitle: 'Event Detail',
+                headerTintColor: '#FFFFFF',
+                headerTitleStyle: { fontWeight: 'bold', fontSize: 20 },
               }}
             />
           </>
@@ -152,6 +153,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#E3FDFD',
   },
 });
