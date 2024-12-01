@@ -10,6 +10,7 @@ import CreateEventScreen from './src/screens/create_event/CreateEventScreen';
 import FavouritesScreen from './src/screens/favourites/FavouritesScreen';
 import ProfileScreen from './src/screens/profile/ProfileScreen';
 import EventDetailScreen from './src/screens/event_detail/EventDetailScreen';
+import EditEventScreen from './src/screens/edit_event/EditEventScreen';
 import AuthScreen from './src/screens/auth/AuthScreen';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './FirebaseConfig';
@@ -127,6 +128,16 @@ const App = () => {
                 headerTitleStyle: { fontWeight: 'bold', fontSize: 20 },
               }}
             />
+            <Stack.Screen
+              name="EditEvent"
+              component={EditEventScreen}
+              options={{
+                headerTitle: 'Edit Event',
+                headerStyle: { backgroundColor: '#00A9A5' },
+                headerTintColor: '#fff',
+              }}
+            />
+
           </>
         ) : (
           <Stack.Screen

@@ -25,7 +25,6 @@ export default function AuthScreen() {
         setLoading(true);
         try {
             await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
-            Alert.alert('Success', 'You are now signed in!');
         } catch (error) {
             Alert.alert('Sign-in Failed', error.message);
         }
@@ -45,7 +44,6 @@ export default function AuthScreen() {
                 email: user.email,
                 createdAt: new Date().toISOString(),
             });
-            Alert.alert('Success', 'Account created successfully!');
         } catch (error) {
             Alert.alert('Sign-up Failed', error.message);
         }

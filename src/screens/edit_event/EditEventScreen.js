@@ -8,26 +8,28 @@ import {
     Alert,
     ActivityIndicator,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { addEvent } from '../../redux/slices/eventsSlice';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
+import { useDispatch } from 'react-redux';
+import { editEvent } from '../../redux/slices/eventsSlice';
 import styles from './styles';
 
-export default function CreateEventScreen() {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [location, setLocation] = useState('');
-    const [date, setDate] = useState(new Date());
-    const [time, setTime] = useState(new Date());
-    const [eventType, setEventType] = useState(null);
-    const [maxAttendees, setMaxAttendees] = useState(null);
-    const [cost, setCost] = useState(null);
+export default function EditEventScreen({ route, navigation }) {
+    const { event } = route.params;
+
+    const [name, setName] = useState(event.name);
+    const [description, setDescription] = useState(event.description);
+    const [location, setLocation] = useState(event.location);
+    const [date, setDate] = useState(new Date(event.date));
+    const [time, setTime] = useState(new Date(event.time));
+    const [eventType, setEventType] = useState(event.type);
+    const [maxAttendees, setMaxAttendees] = useState(event.maxAttendees?.toString());
+    const [cost, setCost] = useState(event.cost?.toString());
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [showTimePicker, setShowTimePicker] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
-    const { loading } = useSelector((state) => state.events);
 
     const handleDateChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -41,13 +43,15 @@ export default function CreateEventScreen() {
         setTime(currentTime);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if (!name || !description || !location || !eventType || !maxAttendees || !cost) {
             Alert.alert('Error', 'All fields are required.');
             return;
         }
 
-        const newEvent = {
+        setLoading(true);
+
+        const updatedEvent = {
             name,
             description,
             location,
@@ -58,27 +62,23 @@ export default function CreateEventScreen() {
             cost: parseFloat(cost),
         };
 
-        dispatch(addEvent(newEvent))
+        dispatch(editEvent({ id: event.id, updatedData: updatedEvent }))
             .unwrap()
             .then(() => {
-                Alert.alert('Success', 'Event created successfully!');
-                setName('');
-                setDescription('');
-                setLocation('');
-                setDate(new Date());
-                setTime(new Date());
-                setEventType(null);
-                setMaxAttendees(null);
-                setCost(null);
+                Alert.alert('Success', 'Event updated successfully!');
+                navigation.goBack();
             })
             .catch((err) => {
-                Alert.alert('Error', `Failed to create event: ${err.message}`);
+                Alert.alert('Error', `Failed to update event: ${err}`);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Text style={styles.header}>Create Event</Text>
+            <Text style={styles.header}>Edit Event</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Event Name"
@@ -114,6 +114,7 @@ export default function CreateEventScreen() {
                 onChange={(item) => setEventType(item.value)}
                 placeholder="Select Event Type"
                 style={styles.dropdown}
+                selectedTextStyle={styles.selectedTextStyle}
             />
             <Dropdown
                 data={[
@@ -128,6 +129,7 @@ export default function CreateEventScreen() {
                 onChange={(item) => setMaxAttendees(item.value)}
                 placeholder="Max Attendees"
                 style={styles.dropdown}
+                selectedTextStyle={styles.selectedTextStyle}
             />
             <Dropdown
                 data={[
@@ -142,6 +144,7 @@ export default function CreateEventScreen() {
                 onChange={(item) => setCost(item.value)}
                 placeholder="Cost"
                 style={styles.dropdown}
+                selectedTextStyle={styles.selectedTextStyle}
             />
             <TouchableOpacity onPress={() => setShowDatePicker(true)}>
                 <Text style={styles.dateButton}>
@@ -177,7 +180,7 @@ export default function CreateEventScreen() {
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
-                    <Text style={styles.submitButtonText}>Create Event</Text>
+                    <Text style={styles.submitButtonText}>Update Event</Text>
                 )}
             </TouchableOpacity>
         </ScrollView>
