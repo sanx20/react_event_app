@@ -27,12 +27,12 @@ const TabNavigator = () => {
 
           if (route.name === 'Home') {
             iconName = 'home-outline';
-          } else if (route.name === 'Favorites') {
+          } else if (route.name === 'Favourites') {
             iconName = 'heart-outline';
           } else if (route.name === 'CreateEvent') {
             iconName = 'add-circle-outline';
           }
-          else if (route.name === 'Proifle') {
+          else if (route.name === 'Profile') {
             iconName = 'person-circle-outline';
           }
           return <Icon name={iconName} size={size} color={color} />;
